@@ -1,0 +1,17 @@
+#main {
+  margin: 0 auto 0 auto;
+/*  width: 500px;*/
+/*  height: 500px;*/
+  padding-top: 50px;
+}
+
+.card {
+  margin: 5px;
+  width: 110px;
+  height: 110px;
+  background-repeat: no-repeat;
+/*  -moz-border-radius: 20px;*/
+/*  -webkit-border-radius: 20px;*/
+/*  -khtml-border-radius: 20px;*/
+/*  border-radius: 20px; */
+}

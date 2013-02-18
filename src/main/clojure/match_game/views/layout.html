@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Match Game</title>
+    <link rel="stylesheet" href="css/app.css">
+    <style id="boardCss">
+      .covered { background-image: url('img/cover.png'); }
+      .covered.hovering { background-image: url('img/cover_hover.png'); }
+
+      #hat-1 { background-image: url('cardsets/xmas-cardset/hat.png'); }
+      #hat-1.hovering { background-image: url('cardsets/xmas-cardset/hat_hover.png'); }
+
+      #hat-2 { background-image: url('cardsets/xmas-cardset/hat.png'); }
+      #hat-2.hovering { background-image: url('cardsets/xmas-cardset/hat_hover.png'); }
+
+      #candycane-1 { background-image: url('cardsets/xmas-cardset/candycane.png'); }
+      #candycane-1.hovering { background-image: url('cardsets/xmas-cardset/candycane_hover.png'); }
+
+      #candycane-2 { background-image: url('cardsets/xmas-cardset/candycane.png'); }
+      #candycane-2.hovering { background-image: url('cardsets/xmas-cardset/candycane_hover.png'); }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div id="main">
+        <div id="board">
+          <img class="card covered"></img>
+        </div>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">
+      var CLOSURE_NO_DEPS = true;
+    </script>
+    <script type="text/javascript" src="matchgame.js"></script>
+  </body>
+</html>
