@@ -1,4 +1,4 @@
-# cljs-matchgame
+# match-game
 
 A game for kids built in Clojure and ClojureScript.
 
