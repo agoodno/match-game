@@ -7,18 +7,18 @@
 
 (defn css-line [card]
   (let [card-selector (str "#" (:id card))]
-  (str
-   (str card-selector " { background-image: url('" (:normal-path card) "'); }\n")
-   (str card-selector ".hovering { background-image: url('" (:hover-path card) "'); }\n")
-   (str card-selector ".covered { background-image: url('/img/cover.png'); }\n")
-   (str card-selector ".covered.hovering { background-image: url('/img/cover_hover.png'); }\n"))))
+    (str
+     (str card-selector " { background-image: url('" (:normal-path card) "'); }\n")
+     (str card-selector ".hovering { background-image: url('" (:hover-path card) "'); }\n")
+     (str card-selector ".covered { background-image: url('/img/cover.png'); }\n")
+     (str card-selector ".covered.hovering { background-image: url('/img/cover_hover.png'); }\n"))))
 
 (defn css-lines [cards]
   (for [card cards] (css-line card)))
 
 (defn card-base-name [card-id cards]
   (let [{{base-name :base-name} card-id} cards]
-  base-name))
+    base-name))
 
 (html/defsnippet game-snippet
   "match_game/views/game.html" [:html]
@@ -64,7 +64,6 @@
 ;;       (println cards)
 ;;       cards)))
 
-;;TODO: make sure cards are random with each request
 (defpage "/game" {:keys [card-style]}
   (let [cards (cardset card-style)]
     (html/emit* (game-snippet cards))))

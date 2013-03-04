@@ -14,6 +14,3 @@
     (map #(second %)
          (sort-by first
              (map list indexes coll)))))
-
-;(def imgs (cardset "/home/andrew/work/cljs-match-game/resources/public/img/cardsets/xmas"))
-;(def hover-imgs (cardset "/home/andrew/work/cljs-match-game/resources/public/img/cardsets/xmas/hover"))
