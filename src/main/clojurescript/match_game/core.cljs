@@ -12,9 +12,9 @@
   (do
     (swap! pairs #(conj % id))
     (if (= 0 (mod (count @pairs) 2))
-      (if (= (base-id (first @pairs)) (base-id (second @pairs)))
-        (.log js/console "match!!")
-        (do
-          (swap! pairs #(rest (rest %)))
-          (.log js/console "no match")))
-      (.log js/console "one on stack"))))
+      (if (not (= (base-id (first @pairs)) (base-id (second @pairs))))
+;        (do
+          (swap! pairs #(rest (rest %))))))); delete ))))
+;          (.log js/console "no match"))
+;        (.log js/console "match!!"))
+;      (.log js/console "one on stack"))))

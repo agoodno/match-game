@@ -25,3 +25,9 @@
 
 ;(def imgs (cardset "/home/andrew/work/cljs-match-game/resources/public/img/cardsets/xmas"))
 ;(def hover-imgs (cardset "/home/andrew/work/cljs-match-game/resources/public/img/cardsets/xmas/hover"))
+
+;(:import javax.imageio.ImageIO)
+;(:import java.io.File)
+;(def file (java.io.File. "/home/andrew/work/match-game/resources/public/img/cardsets/oldmaid/loggin_larry.png"))
+;(def img (javax.imageio.ImageIO/read file))
+;(def size [(.getWidth img) (.getHeight img)])

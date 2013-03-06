@@ -4,9 +4,6 @@
 
 img.card {
   margin: 5px;
-  width: 110px;
-  /*height: 110px;*/
-  height: 172px;
   background-repeat: no-repeat;
   border: 10px solid lightgrey;
 }

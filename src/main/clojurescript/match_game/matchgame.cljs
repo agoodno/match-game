@@ -13,10 +13,10 @@
 (def $card ($ :img.card))
 
 (defn print-pairs []
-  (.log js/console "pairs are %s" (clojure.string/join "," @core/pairs)))
+  #_(.log js/console "pairs are %s" (clojure.string/join "," @core/pairs)))
 
 (defn print-card [prefix id]
-  (.log js/console "%s %s" prefix id))
+  #_(.log js/console "%s %s" prefix id))
 
 (defn hover-over-card [e]
   (let [target (.-target e)
