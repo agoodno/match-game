@@ -1,0 +1,36 @@
+# Home page
+/ 
+
+# Create game
+POST /games
+req_body: { :cardset }
+res: 201
+res_body: { :uuid, :cardset }
+
+# Show game
+GET /games/{:uuid}
+res_body: { :uuid, :cardset, :board { :players, { :cards [:card_id: :card_state] } } }
+
+# Join game
+POST /games/{:uuid}/users/{:user_id}
+
+# Play game
+PUT /games/{:uuid}/users/{:user_id}/card/{:card_id}
+
+# Update Game (Web Socket Push)
+to: players in games-{:uuid}
+push_body: { :cards [:card_id: :card_state] }
+
+# Create user
+POST /users
+req_body: { :username, :email, :first_name, :last_name }
+res: 201
+
+# Show user
+GET /users/{:user_id}
+res: 200
+res_body: { :username, :email, :first_name, :last_name }
+
+PUT /users/{:user_id
+req_body: { :email, :first_name, :last_name }
+res: 204

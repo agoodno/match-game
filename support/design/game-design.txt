@@ -1,0 +1,45 @@
+game core
+
+  Maintains information and state about current games and players.
+
+  Games can have up to 5 players. The game starts a user initiates a
+  game. They choose a cardset. They invite other players.  Each of the
+  invited players needs to join the game. The player who started the
+  game can start the game when at least 1 other player has joined. The
+  game chooses a player to go first. That player will take their
+  turn. The game will reflect their moves. The player can keep playing
+  until an unsuccessful match. Afterwards, plays by the player will be
+  rejected until the other player is done.
+
+game service
+
+  Service provides an API to interact with the game.
+
+  Games players must be logged in as a valid jabber user on the game
+  notifier to initiate a game. User creation involves creating a user
+  account with the game notifier service. Invitations will be sent by
+  email with a Join link that allows a user to join a game.
+  
+game notifier
+
+  Notifies users of game actions as they happen.
+
+  Later this service could be used to chat during the game. This is a
+  separate service because it will most likely be a Jabber server that
+  communicates between 2 or more known users using the Jabber
+  protocol. The game server will send a message for broadcast to the
+  game players to be notified of the current state of the game board.
+
+game web client
+
+  The web browser will display the game and maintain game state
+  through a Web Socket connections and accept messages over XMPP. The
+  payload of the XMPP message will go to all players and the client
+  will update the state based on its contents. Actions will be
+  initiated by one player (whose turn it is) and the visible response
+  to that action will be communicated to all players.
+
+game chat client
+
+  A jabber client could be used for chat communication between game
+  players.
