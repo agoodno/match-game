@@ -1,6 +1,7 @@
 (ns match-game.core
   (:require [clojure.java.io :refer [file]]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            [clojure.pprint :as pp]))
 
 (defn walk-dir [dirpath pattern]
   (doall (filter #(re-matches pattern (.getName %))
@@ -35,40 +36,57 @@
    (map str/capitalize)
    (str/join " ")))
 
-(defn load-deck [deck-name]
-  (let [card-names (names-in-deck deck-name)
-        deck-names (repeat (count card-names) deck-name)]
-    {:name deck-name
-     :description (human-name deck-name)
-     :cards (set (map load-card deck-names card-names))}))
+(defn uri-path [dir base-name]
+  (str "/" dir "/" base-name ".png"))
 
 (defn load-card [deck-name card-name]
   {:name card-name
    :description (human-name card-name)
    :img (uri-path deck-name card-name)})
 
-(defn uri-path [dir base-name]
-  (str "/" dir "/" base-name ".png"))
+;;     :cards (group-by :name (map load-card deck-names card-names))
+(defn load-deck [deck-name]
+  (let [card-names (names-in-deck deck-name)
+        deck-names (repeat (count card-names) deck-name)
+        card-map (group-by :name (map load-card deck-names card-names))]
+    {:name deck-name
+     :description (human-name deck-name)
+     :cards (zipmap (map keyword (keys card-map)) (map #(first %) (vals card-map)))}))
 
-(defn init-board [dimensions background-color deck]
-  {:dimensions dimensions
-   :background-color background-color
-   :slots (init-slots deck)})
+(def get-deck (memoize load-deck))
 
-(defn init-slots [deck]
-  (let [cards (:cards deck)
-        twins [:left :right]]
+(def players
+  {:agoodno { :name "Andy" }
+   :cjgoodno { :name "Cal" }})
+
+(defn init-slot [card twin]
+  {:twin twin :state :covered :card-key (keyword (:name card))})
+
+(defn init-slots [cards]
+  (let [twins [:left :right]]
     (shuffle
      (mapcat (fn [twin]
                (map (fn [card]
-                      (init-slot card twin)) cards)) twins))))
+                      (init-slot card twin))
+                    cards))
+             twins))))
 
-(defn init-slot [card twin]
-  (merge { :twin twin :state :covered } card))
+(defn init-board [dimensions background-color cards]
+  {:dimensions dimensions
+   :background-color background-color
+   :slots (init-slots cards)})
 
 (defn init-game [deck-name]
   (let [dimensions [4 5]
-        background-color "black"]
-  {:players { :agoodno { :name "Andy" } :cjgoodno { :name "Cal" }}
-    :turn :cjgoodno
-    :board (init-board dimensions background-color (load-deck deck-name))}))
+        background-color "black"
+        deck (get-deck deck-name)
+        cards (vals (:cards deck))]
+    {:players players
+     :turn :cjgoodno
+     :deck deck
+     :board (init-board dimensions background-color cards)}))
+
+(defn -main
+  [& args]
+  (let [[deck-name] args]
+  (pp/pprint (init-game deck-name))))

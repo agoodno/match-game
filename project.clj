@@ -22,4 +22,4 @@
                                    :optimizations :whitespace
                                    :pretty-print true
                                    :externs ["externs/jquery.js"]}}]}
-  :main match-game.server)
+  :main match-game.core)
