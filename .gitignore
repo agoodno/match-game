@@ -13,3 +13,4 @@ pom.xml.asc
 .lein-cljsbuild-compiler-0
 .repl
 .vagrant
+.nrepl-port
