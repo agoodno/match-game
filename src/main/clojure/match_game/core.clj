@@ -86,7 +86,20 @@
      :deck deck
      :board (init-board dimensions background-color cards)}))
 
+(defn flip [state] (if (= :covered state) :facing :covered))
+
+(defn flip-slot [game idx]
+  (let [board (:board @game)
+        slots (:slots board)
+        slot (get slots idx)]
+    (assoc @game :board
+           (assoc board :slots
+                  (assoc slots idx (update slot :state flip))))))
+
 (defn -main
   [& args]
-  (let [[deck-name] args]
-  (pp/pprint (init-game deck-name))))
+  (let [[deck-name] args
+        game (atom (init-game deck-name))]
+    (pp/pprint game)))
+
+;;(reset! game (match-game.core/flip-slot game 2))
