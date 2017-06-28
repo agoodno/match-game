@@ -54,10 +54,6 @@
 
 (def get-theme (memoize load-theme))
 
-(def players
-  {:agoodno { :name "Andy" }
-   :cjgoodno { :name "Cal" }})
-
 (defn init-card [face-design twin]
   (let [back-design { :back-img "/hoyle.png" }]
     (->
@@ -79,13 +75,14 @@
    :background-color background-color
    :cards (init-cards designs)})
 
-(defn init-game [theme-name]
+(defn init-game [theme-name player1 player2]
   (let [dimensions [4 5]
         background-color "black"
         theme (get-theme theme-name)
-        designs (:designs theme)]
+        designs (:designs theme)
+        players [player1 player2]]
     {:players players
-     :turn :cjgoodno
+     :turn (first players)
      :theme theme
      :board (init-board dimensions background-color designs)}))
 
@@ -102,10 +99,28 @@
      (update-in game [:board :cards idx :state :name] flip-state)
      (update-in ,,, [:board :cards idx :state :img] flip-img card))))
 
+(defn flip-turn [turn] (if (= "Andy" turn) "Cal" "Andy"))
+
+(defn end-turn [game]
+  (update-in game [:turn] flip-turn))
+
+(defn action [player game f & args]
+  (if (= (:turn game) player)
+    {:status :success :result (apply f (cons game args))}
+    {:status :failure :message "It's not your turn" :result game}))
+
 (defn -main
   [& args]
-  (let [[theme-name] args
-        game (atom (init-game theme-name))]
+  (let [[theme-name player1 player2] args
+        game (atom (init-game theme-name player1 player2))]
     (pp/pprint game)))
 
 ;;(reset! game (match-game.core/flip-card game 2))
+
+;;(def game (match-game.core/init-game "old_maid"))
+;;(def game (:result (match-game.core/action "Cal" game flip-card 6)))
+;;(def game (:result (match-game.core/action "Cal" game flip-card 1))
+;;(def game (:result (match-game.core/action "Cal" game end-turn)))
+;;(def game (:result (match-game.core/action "Andy" game flip-card 5)))
+;;(def game (:result (match-game.core/action "Andy" game flip-card 4))
+;;(def game (:result (match-game.core/action "Andy" game end-turn)))
