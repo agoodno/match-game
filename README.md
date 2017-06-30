@@ -22,6 +22,16 @@ FIXME
 ## play game
 [http://localhost:8080/game?card-style=xmas](http://localhost:8080/game?card-style=xmas)
 
+## run tests in console
+
+(require 'match-game.core-test :reload-all)
+
+;; Run for one namespace
+(clojure.test/run-tests 'match-game.core-test)
+
+;; Run all tests in project
+(clojure.test/run-all-tests #"match-game.*-test")
+
 
 ## License
 

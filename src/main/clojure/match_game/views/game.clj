@@ -1,9 +1,10 @@
-(ns match-game.views.game
+  (ns match-game.views.game
   (:import (javax.imageio.ImageIO))
   (:import (java.io.File))
   (:require [net.cgrand.enlive-html :as html]
             [match-game.views.common :as common]
-            [match-game.core :as core])
+            [match-game.core :as core]
+            [match-game.util :as util])
   (:use noir.core
         clojure.pprint))
 
@@ -58,7 +59,7 @@
 
 (defn files-in-cardset [cardset-name]
   (let [cardset-dirpath (str (.getFile (clojure.java.io/resource "public/img/cardsets/")) cardset-name)
-        files (core/list-dir cardset-dirpath #".*\.png")]
+        files (util/list-dir cardset-dirpath #".*\.png")]
         (map #(.getPath %) files)))
 
 (defn ids-in-cardset [cardset-name]
@@ -71,7 +72,7 @@
 
 (defn cards-in-round [cardset-name]
   (let [ids (ids-in-cardset cardset-name)]
-    (core/randomize
+    (util/randomize
      (concat (map #(get-card %1 cardset-name "-left") ids)
              (map #(get-card %1 cardset-name "-right") ids)))))
 

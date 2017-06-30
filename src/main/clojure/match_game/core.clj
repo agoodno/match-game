@@ -3,55 +3,32 @@
             [clojure.string :as str]
             [clojure.pprint :as pp]
             [clojure.set :refer [rename-keys]]
-            [clojure.core.reducers :as reducers]))
-
-(defn walk-dir [dirpath pattern]
-  (doall (filter #(re-matches pattern (.getName %))
-                 (file-seq (file dirpath)))))
-
-(defn list-dir [dirpath pattern]
-  (doall (filter #(re-matches pattern (.getName %))
-                 (-> dirpath file .listFiles))))
-
-(defn randomize [coll]
-  (let [indexes (shuffle (range (count coll)))]
-    (map #(second %)
-         (sort-by first
-                  (map list indexes coll)))))
+            [clojure.core.reducers :as reducers]
+            [match-game.util :as util]))
 
 (defn files-in-theme [theme-name]
   (let [theme-dirpath (str (.getFile (clojure.java.io/resource "public/img/themes/")) theme-name)
-        files (list-dir theme-dirpath #".*\.png")]
+        files (util/list-dir theme-dirpath #".*\.png")]
     (map #(.getPath %) files)))
 
-(defn short-path [filePath]
-  (last (re-find #"^(.*)(/img/.*)$" filePath)))
-
 (defn names-in-theme [theme-name]
-  (comment '("alto_annie" "postman_pete"))
-  (let [file-strs (files-in-theme theme-name)
-        short-paths (map #(short-path %) file-strs)]
-    (map #(last (re-find #"^.*\/(.*)\.png$" %)) short-paths)))
-
-(defn human-name [code]
-  (->>
-   (str/split code #"_")
-   (map str/capitalize)
-   (str/join " ")))
+  (comment ex. '("alto_annie" "postman_pete"))
+  (let [file-strs (files-in-theme theme-name)]
+    (map #(last (re-find #"^.*\/(.*)\.png$" %)) file-strs)))
 
 (defn uri-path [dir base-name]
   (str "/" dir "/" base-name ".png"))
 
 (defn load-design [theme-name design-name]
   {:name design-name
-   :description (human-name design-name)
+   :description (util/human-name design-name)
    :img (uri-path theme-name design-name)})
 
 (defn load-theme [theme-name]
   (let [design-names (names-in-theme theme-name)
         theme-names (repeat (count design-names) theme-name)]
     {:name theme-name
-     :description (human-name theme-name)
+     :description (util/human-name theme-name)
      :designs (map load-design theme-names design-names)}))
 
 (def get-theme (memoize load-theme))
