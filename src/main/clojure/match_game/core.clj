@@ -17,7 +17,7 @@
     (map #(last (re-find #"^.*\/(.*)\.png$" %)) file-strs)))
 
 (defn uri-path [dir base-name]
-  (str "/" dir "/" base-name ".png"))
+  (str "/images/" dir "/" base-name ".png"))
 
 (defn load-design [theme-name design-name]
   {:name design-name
