@@ -60,18 +60,6 @@
 (defn init-player [name]
   {:name name :display-name (str/capitalize name)})
 
-(defn init-game [theme-name player1 player2]
-  (let [dimensions [4 5]
-        background-color "black"
-        theme (get-theme theme-name)
-        designs (:designs theme)
-        players [(init-player player1)
-                 (init-player player2)]]
-    {:players players
-     :player-turn (init-player-turn (first players))
-     ;;:theme theme
-     :board (init-board dimensions background-color designs)}))
-
 (defn toggle-state [state] (if (= :covered state) :facing :covered))
 
 (defn toggle-img [img card]
@@ -92,10 +80,6 @@
   (if (= (:name (first players)) (:name player-turn))
     (init-player-turn (second players))
     (init-player-turn (first players))))
-
-(defn end-turn [game]
-  (let [players (:players game)]
-  (update-in game [:player-turn] toggle-turn players)))
 
 (defn flip-count [game] (get-in game [:player-turn :flip-count]))
 
@@ -152,6 +136,18 @@
       (finalize-matches game))
     game))
 
+(defn init-game [theme-name player1 player2]
+  (let [dimensions [4 5]
+        background-color "black"
+        theme (get-theme theme-name)
+        designs (:designs theme)
+        players [(init-player player1)
+                 (init-player player2)]]
+    {:players players
+     :player-turn (init-player-turn (first players))
+     ;;:theme theme
+     :board (init-board dimensions background-color designs)}))
+
 (defn play-card [player-name game idx]
   (let [msg (validate-play player-name game)]
     (if (some? msg)
@@ -159,6 +155,10 @@
       (->
         (flip-card game idx)
         (resolve-matches)))))
+
+(defn end-turn [game]
+  (let [players (:players game)]
+  (update-in game [:player-turn] toggle-turn players)))
 
 (defn -main
   [& args]
