@@ -2158,3 +2158,59 @@ user> (pprint (match-game.core/init-game "old_maid"))
     :img "/old_maid/lasso_louie.png"}]}}
 nil
 user>
+
+
+
+;; (defn action [player game f & args]
+;;   (if (not= (:turn game) (:name player))
+;;     (assoc game :message "It's not your turn")
+;;     (apply f (cons (dissoc game :message) args))))
+
+;; (defn process-action-result [res]
+;;   (let [status (first res)
+;;         value (second res)]
+;;   (do
+;;     (if (= status :failure)
+;;       (merge {(:message value)))
+;;       value))))
+
+;; (defn play-card [player-name game idx]
+;;   (->
+;;    (validate-turn player-name game)
+;;    (validate-flip-count ,,,)
+;;    (flip-card ,,, idx)))
+
+;; (defn validate-play [player-name game]
+;;   (reducers/fold validate [(fn [] ((fn [x y] nil) player-name game))
+;;                            (fn [] ((fn [x] "Something went wrong 2") game))]))
+
+;;(into [] (map #(%) [ (fn [] nil) (fn [] nil)]))
+;;(reducers/fold diddly [(fn [] nil) (fn [] nil) (fn [] "Something 3")])
+
+
+(require 'match-game.core :reload-all)
+(def game (atom (match-game.core/init-game "old_maid" "Andy" "Cal")))
+(reset! game (match-game.core/play-card "Cal" @game 0))
+(:message @game) ;; "It's not your turn"
+(reset! game (match-game.core/flip-card @game 1))
+(reset! game (match-game.core/flip-card @game 4))
+(reset! game (match-game.core/play-card "Cal" @game 0))
+(:message @game) ;; "Your turn is over"
+(reset! game (match-game.core/play-card "Andy" @game 0))
+(reset! game (match-game.core/end-turn @game))
+
+;;match
+(require 'match-game.core :reload-all)
+(def game (atom (match-game.core/init-game "old_maid" "Andy" "Cal")))
+(def cards (:cards (:board @game)))
+(def postpetes (map first (filter #(= (second %) "postman_pete") (map-indexed vector (map :name cards)))))
+(map #(reset! game (match-game.core/play-card "Andy" @game %)) postpetes)
+(pprint @game)
+
+;;random, probably non-match
+(require 'match-game.core :reload-all)
+(def game (atom (match-game.core/init-game "old_maid" "Andy" "Cal")))
+(def cards (:cards (:board @game)))
+(def pick-two (map first (take 2 (map-indexed vector (map :name cards)))))
+(map #(reset! game (match-game.core/play-card "Andy" @game %)) pick-two)
+(pprint @game)
