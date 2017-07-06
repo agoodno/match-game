@@ -1,16 +1,34 @@
+resources/public/js/out
+resources/public/js/match_game.js
 /target
 /lib
 /classes
 /checkouts
+/out
+/.repl
 pom.xml
 pom.xml.asc
+\#*\#
+.\#*
 *.jar
 *.class
+*-init.clj
+*.log
 .lein-deps-sum
 .lein-failures
 .lein-plugins
 .lein-repl-history
-.lein-cljsbuild-compiler-0
-.repl
-.vagrant
 .nrepl-port
+.lein-classpath
+
+# Emacs backup files
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
